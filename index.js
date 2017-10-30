@@ -2,7 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import routes from './app/routes/index_routes.js';
+import router from './src/app/routes/router.js';
 
 // Set up express app
 const app = express();
@@ -19,12 +19,11 @@ if (env !== 'production') {
 
 // Parsing incoming requests data
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false })); // Uses native querystring node library
 
 // Routing
-let router = express.Router();
-router.get('/lists', (req, res) => {
-  res.json({'lists': ['its hers']})
+app.get('/', (req, res) => {
+  res.send("Welcome to our API!");
 });
 
 app.use('/api/v1', router);

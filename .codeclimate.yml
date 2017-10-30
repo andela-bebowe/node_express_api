@@ -1,0 +1,15 @@
+engines:
+  eslint:
+    enabled: true
+  config:
+    extensions:
+    - .es6
+    - .js
+ratings:
+ paths:
+ - "**.js"
+ - "**.es6"
+exclude_paths:
+- "tests/"
+- "spec/"
+- "**/vendor/"
