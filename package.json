@@ -7,11 +7,9 @@
   "author": "Ebowe Blessing",
   "license": "MIT",
   "scripts": {
-    "build-server": "babel -d build ./index.js -s",
-    "clean": "rm -rf build && mkdir build",
-    "build": "npm run clean && npm run build-server",
-    "start:dev": "nodemon index.js --exec babel-node",
-    "start": "npm run build && node ./build/index.js"
+    "clean": "gulp clean",
+    "build": "gulp",
+    "start": "gulp serve"
   },
   "engines": {
     "node": "8.x"
@@ -42,6 +40,7 @@
     "eslint-plugin-react": "^7.4.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
+    "gulp-eslint": "^4.0.0",
     "gulp-exit": "0.0.2",
     "gulp-istanbul": "^1.1.2",
     "gulp-load-plugins": "^1.5.0",

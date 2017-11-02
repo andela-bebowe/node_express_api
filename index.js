@@ -2,7 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import router from './src/app/routes/router.js';
+import router from './src/app/routes/router';
 
 // Set up express app
 const app = express();
@@ -23,11 +23,11 @@ app.use(bodyParser.urlencoded({ extended: false })); // Uses native querystring 
 
 // Routing
 app.get('/', (req, res) => {
-  res.send("Welcome to our API!");
+  res.send('Welcome to our API!');
 });
 
 app.use('/api/v1', router);
 
-app.listen(PORT, () => {console.log(`Listening on port ${PORT}`);});
+app.listen(PORT, () => { console.info(`Listening on port ${PORT}`); });
 
 export default app;

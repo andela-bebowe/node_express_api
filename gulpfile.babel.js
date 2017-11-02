@@ -12,17 +12,17 @@ const paths = {
   files: ['./.env', './Procfile', './.gitignore', './db.js'],
   tests: {
     integration: '.tests/integration/**/*.js',
-    unit: '.tests/unit/**/*.js'
+    unit: '.tests/unit/**/*.js',
   },
   server: './index.js',
   ignore: ['!node_modules/**', '!coverage/**', '!build/**', '!tests/**', '!gulpfile.babel.js'],
-  build: 'build'
+  build: 'build',
 };
 
 // Explanation for this
 const opt = {
   dir: './coverage',
-  reporters: [ 'lcov', 'json', 'text', 'text-summary', 'clover'],
+  reporters: ['lcov', 'json', 'text', 'text-summary', 'clover'],
   reportOpts: { dir: './coverage' },
 };
 
@@ -33,9 +33,8 @@ gulp.task('clean', () => del(['build/**', '!build']));
 gulp.task('copy', () => {
   gulp.src(paths.files)
     .pipe($.newer(paths.build))
-    .pipe(gulp.dest(paths.build))
-  }
-);
+    .pipe(gulp.dest(paths.build));
+});
 
 // Explanation for base.
 // we are not doing things like concat, minify, uglify why?
@@ -48,19 +47,19 @@ gulp.task('babel', () => {
       includeContent: false,
       sourceRoot(file) {
         return path.relative(file.path, __dirname);
-      }
+      },
     }))
-    .pipe(gulp.dest(paths.build))
+    .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('nodemon', ['copy', 'babel'], () => {
   $.nodemon({
     script: path.join(paths.build, 'index.js'),
-    env: { 'NODE_ENV': 'development' },
+    env: { NODE_ENV: 'development' },
     ignore: paths.ignore,
     tasks: ['copy', 'babel'],
-    watch: [paths.src]
-  }).on('restart', () => console.log('Restarting'))
+    watch: [paths.src],
+  }).on('restart', () => console.info('Restarting'));
 });
 
 // we are testing the already built files?.
@@ -72,7 +71,7 @@ gulp.task('nodemon', ['copy', 'babel'], () => {
 gulp.task('test', () => {
   process.env.NODE_ENV = 'test';
 
-// Whats in serverTests
+  // Whats in serverTests
   gulp.src(['./build/src/app/**/*.js'])
     .pipe($.plumber())
     .pipe($.istanbul())
@@ -84,23 +83,28 @@ gulp.task('test', () => {
           ui: 'bdd',
           recursive: true,
           compilers: {
-            js: babelCompiler
-          }
+            js: babelCompiler,
+          },
         }))
         .once('error', (e) => {
-          console.log(e)
+          console.info(e);
           process.exit(1);
         })
         .pipe($.istanbul.writeReports(opt))
         .pipe($.istanbul.enforceThresholds({ thresholds: { global: 10 } }))
-        .on('end', () => console.log('>>Finished Running Tests'))
-        .pipe($.exit())
-      }
-    )
+        .on('end', () => console.info('>>Finished Running Tests'))
+        .pipe($.exit());
+    });
+});
+
+gulp.task('lint', () => {
+  gulp.src(['**/*.js', '!node_modules/**'])
+    .pipe($.eslint())
+    .pipe($.eslint.format());
 });
 
 gulp.task('serve', ['clean'], () => sequence('nodemon'));
 
 gulp.task('default', ['clean'], () => {
-  sequence(['copy', 'babel']);
+  sequence(['lint', 'copy', 'babel']);
 });
