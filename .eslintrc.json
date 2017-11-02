@@ -1,6 +1,17 @@
 {
-    "extends": "airbnb",
-    "plugins": [
-        "react"
-    ]
+  "extends": "airbnb",
+  "plugins": [
+    "react"
+  ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jquery": true,
+    "mocha": true
+  },
+  "rules" : {
+    "comma-dangle": ["error", "only-multiline"],
+    "no-console": ["error", { "allow": ["warn", "error", "info"] }]
+  }
 }

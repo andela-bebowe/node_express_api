@@ -1,0 +1,10 @@
+# Ignore built files except build/index.js
+/build/**
+/coverage/**
+/docs/**
+/jsdoc/**
+/templates/**
+/tests/**
+/tests/unit/**
+/tests/integration/**
+/tmp/**
